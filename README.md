@@ -1,0 +1,2 @@
+# timelapse-calculator
+Timelapse Calculator
