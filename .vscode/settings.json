@@ -1,0 +1,8 @@
+{
+
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [80, 140],
+  "explorer.sortOrderLexicographicOptions": "lower", // Case sensitive file ordering in tree
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.activeIconPack": "angular_ngrx",
+}

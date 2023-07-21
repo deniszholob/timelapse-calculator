@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- HTML Meta Tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="title" content="Timelapse Calculator" />
+    <meta name="description" content="Timelapse Calculator" />
+    <meta name="keywords" content="Timelapse Calculator, DDDGamer, Denis Zholob" />
+    <meta name="author" content="Denis Zholob" />
+
+    <!-- Title/Icons -->
+    <title>Timelapse Calculator</title>
+    <link rel="icon" href="./favicon.ico" />
+
+    <!-- Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="http://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Play" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'website/bootstrap/css/bootstrap.min.css' %}" /> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Custom Stylesheets Here -->
+    <link rel="stylesheet" href="./styles.css" />
+
+    <!-- Global Site Tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-28080172-12"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "UA-28080172-12");
+    </script>
+  </head>
+
+  <body>
+    <div class="intro">
+      <div class="darken">
+        <h1 class="text-uppercase">Timelapse Calculator</h1>
+
+        <div class="section sec-a">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <h3><i class="fa fa-camera" aria-hidden="true"></i> Shooting</h3>
+                <hr />
+
+                <label><i class="fa fa-hourglass-half" aria-hidden="true"></i> Shooting Interval:</label>
+                (<span id="computed-shooting-fps"> 0.1 </span> fps)
+                <div class="input-group">
+                  <input
+                    id="shooting-interval"
+                    type="number"
+                    class="form-control"
+                    value="10"
+                    aria-describedby="span_shooting-interval-unit"
+                    onchange="calculate_clip()"
+                  />
+                  <span id="span_shooting-interval-unit" class="input-group-addon">
+                    <select id="shooting-interval-unit" class="input-group-addon">
+                      <option value="0">Seconds</option>
+                      <option value="1">Minutes</option>
+                    </select>
+                  </span>
+                </div>
+
+                <br />
+
+                <label><i class="fa fa-clock-o" aria-hidden="true"></i> Real-time duration:</label>
+                <div class="input-group">
+                  <input
+                    id="shooting-duration"
+                    type="number"
+                    class="form-control"
+                    value="20"
+                    aria-describedby="span_shooting-duration-unit"
+                    onchange="calculate_clip()"
+                  />
+                  <span id="span_shooting-duration-unit" class="input-group-addon">
+                    <select id="shooting-duration-unit" class="input-group-addon">
+                      <option value="1">Minutes</option>
+                      <option value="2">Hours</option>
+                    </select>
+                  </span>
+                </div>
+
+                <br />
+
+                <label><i class="fa fa-file" aria-hidden="true"></i> Frame Count:</label>
+                <div class="input-group">
+                  <input
+                    id="clip-frame-count"
+                    type="number"
+                    class="form-control"
+                    value="720"
+                    aria-describedby="span_clip-frame-count"
+                    onchange="calculate_Interval()"
+                  />
+                  <span id="span_clip-frame-count" class="input-group-addon">frames</span>
+                </div>
+
+                <br />
+              </div>
+              <!-- END col -->
+
+              <div class="col-xs-12 col-sm-6">
+                <h3><i class="fa fa-video-camera" aria-hidden="true"></i> Timelapse Clip</h3>
+                <hr />
+
+                <label><i class="fa fa-play" aria-hidden="true"></i> Playback:</label>
+                <div class="input-group">
+                  <!-- <input id="clip-playback-fps" type="number" class="form-control" value="30" aria-describedby="span_clip-playback-fps"> -->
+                  <select id="clip-playback-fps" class="form-control" aria-describedby="span_clip-playback-fps" onchange="calculate_clip()">
+                    <option value="23.97">23.97</option>
+                    <option value="24" selected>24</option>
+                    <option value="29.97">29.97</option>
+                    <option value="30">30</option>
+                  </select>
+                  <span id="span_clip-playback-fps" class="input-group-addon">fps</span>
+                </div>
+
+                <br />
+
+                <label><i class="fa fa-film" aria-hidden="true"></i> Clip Length:</label>
+                <div class="input-group">
+                  <input id="clip-length" type="number" class="form-control" value="24" aria-describedby="span_clip-length" />
+                  <span id="span_clip-length" class="input-group-addon">seconds</span>
+                </div>
+              </div>
+              <!-- END col -->
+            </div>
+            <!-- END row -->
+
+            <div class="row">
+              <div class="col-xs-6">
+                <h3><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage Space</h3>
+                <hr />
+
+                <label><i class="fa fa-file-image-o" aria-hidden="true"></i> Avg Photo Size:</label>
+                <div class="input-group">
+                  <input
+                    id="image-size"
+                    type="number"
+                    class="form-control"
+                    value="2"
+                    aria-describedby="span_image-size-unit"
+                    onchange="calculate_size()"
+                  />
+                  <span id="span_image-size-unit" class="input-group-addon">
+                    <select id="image-size-unit" class="input-group-addon" onchange="calculate_size()">
+                      <option value="0">KB</option>
+                      <option value="1" selected>MB</option>
+                    </select>
+                  </span>
+                </div>
+
+                <br />
+
+                <label><i class="fa fa-hdd-o" aria-hidden="true"></i> Total Req Size:</label>
+                <div class="input-group">
+                  <input
+                    id="total-size"
+                    type="number"
+                    class="form-control"
+                    value="1440"
+                    aria-describedby="span_total-size-unit"
+                    onchange="calculate_size()"
+                  />
+                  <span id="span_total-size-unit" class="input-group-addon">
+                    <select id="total-size-unit" class="input-group-addon" onchange="calculate_size()">
+                      <option value="0">KB</option>
+                      <option value="1">MB</option>
+                      <option value="2">GB</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+              <!-- END col -->
+            </div>
+            <!-- END row -->
+          </div>
+        </div>
+      </div>
+      <!-- END darken -->
+    </div>
+    <!-- END intro -->
+
+    <script src="./scripts.js"></script>
+  </body>
+</html>
